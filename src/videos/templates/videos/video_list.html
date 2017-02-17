@@ -1,5 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Videos | {{ block.super }}{% endblock %}
+{% block content %}
 {{ object_list }}
 {{ video_list }}
 {% for item in object_list %}
 	<li>{{ item.title }}</li>
 {% endfor %}
+{% endblock %}
