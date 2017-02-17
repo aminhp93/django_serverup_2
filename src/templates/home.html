@@ -19,6 +19,7 @@
   </head>
   <body>
     <h1>Hello, {{ name }}! {{ random_number }}</h1>
+    
     {% if request.user.is_authenticated %}
       Hi there
     {% endif %}
