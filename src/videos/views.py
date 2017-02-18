@@ -9,11 +9,13 @@ from django.views.generic import (
 	)
 
 from .models import Video
+from .forms import VideoForm
 # Create your views here.
 
 class VideoCreateView(CreateView):
-	queryset = Video.objects.all()
-
+	model = Video 
+	form_class = VideoForm
+	
 class VideoDetailView(DetailView):
 	queryset = Video.objects.all()
 
