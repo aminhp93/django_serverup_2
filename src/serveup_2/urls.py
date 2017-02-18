@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^videos/$', VideoListView.as_view(), name='video_list'),
     url(r'^videos/(?P<pk>\d+)/$', VideoDetailView.as_view(), name='video_detail'),
+    url(r'^videos/(?P<slug>[\w-]+)/$', VideoDetailView.as_view(), name='video_detail_slug'),
 ]
