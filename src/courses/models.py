@@ -9,7 +9,7 @@ class Course(models.Model):
 	title 		    = models.CharField(max_length=120)
 	slug 			= models.SlugField(blank=True)
 	description 	= models.TextField()
-	price 			= models.DecimalField()
+	# price 			= models.DecimalField()
 	updated 		= models.DateTimeField(auto_now=True)
 	timestamp 		= models.DateTimeField(auto_now_add=True) 
 

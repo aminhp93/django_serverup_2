@@ -48,6 +48,8 @@ class VideoListView(ListView):
 
 class VideoUpdateView(UpdateView):
 	queryset = Video.objects.all()
+	form_class = VideoForm
 
 class VideoDeleteView(DeleteView):
 	queryset = Video.objects.all()
+	success_url = "/videos/"
