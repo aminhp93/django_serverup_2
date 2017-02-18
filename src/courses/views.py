@@ -9,9 +9,9 @@ from django.views.generic import (
 		DeleteView,
 	)
 
-from .froms import CourseForm
+from .forms import CourseForm
 from .models import Course
-from .mixins import MemberRequiredMixin, StaffMemberRequiredMixin
+from videos.mixins import MemberRequiredMixin, StaffMemberRequiredMixin
 
 # Create your views here.
 
@@ -21,7 +21,6 @@ class CourseCreateView(LoginRequiredMixin, CreateView):
 	# success_url = "/"
 
 	def form_valid(self, form):
-		print("24", form)
 		obj = form.save(commit=False)
 		obj.user = self.request.user
 		obj.save()

@@ -1,8 +1,7 @@
 from django.conf.urls import url
 from django.contrib import admin
 
-from .views import HomeView
-from videos.views import (
+from .views import (
         CourseListView, 
         CourseDetailView, 
         CourseCreateView,

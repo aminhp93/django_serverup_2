@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from videos.views import (
+from .views import (
         VideoListView, 
         VideoDetailView, 
         VideoCreateView,
