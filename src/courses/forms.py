@@ -11,3 +11,11 @@ class CourseForm(forms.ModelForm):
 			'slug',
 			'price',
 		]
+
+	def clean_slug(self):
+		slug = self.cleaned_data.get("slug")
+		qs = Course.objects.filter(slug=slug)
+		if qs.exists():
+			raise forms.ValidationError("slug does exist")
+		return slug
+
