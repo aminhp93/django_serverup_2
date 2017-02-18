@@ -1,4 +1,5 @@
 import random
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import (
 		CreateView,
@@ -9,15 +10,17 @@ from django.views.generic import (
 	)
 
 from .models import Video
+from .mixins import MemberRequiredMixin, StaffMemberRequiredMixin
 from .forms import VideoForm
+
 # Create your views here.
 
-class VideoCreateView(CreateView):
+class VideoCreateView(LoginRequiredMixin, CreateView):
 	model = Video 
 	form_class = VideoForm
 	# success_url = "/"
 
-class VideoDetailView(DetailView):
+class VideoDetailView(StaffMemberRequiredMixin, DetailView):
 	queryset = Video.objects.all()
 
 	def get_object(self):
