@@ -17,6 +17,11 @@ class VideoCreateView(CreateView):
 class VideoDetailView(DetailView):
 	queryset = Video.objects.all()
 
+	def get_context_data(self, *args, **kwargs):
+		context = super().get_context_data(*args, **kwargs)
+		print(context)
+		return context
+
 class VideoListView(ListView):
 	queryset = Video.objects.filter(title__icontains="em")
 
