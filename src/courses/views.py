@@ -1,5 +1,6 @@
 import random
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import (
 		CreateView,
@@ -30,8 +31,21 @@ class CourseDetailView(StaffMemberRequiredMixin, DetailView):
 	queryset = Course.objects.all()
 
 	def get_object(self):
-		abc = self.kwargs.get("slug")
-		return get_object_or_404(Course, slug=abc)
+		slug = self.kwargs.get("slug")
+				
+		obj = Course.objects.filter(slug=slug)
+		if obj.exists():
+			return obj.first()
+		raise Http404
+		# try:
+		# 	obj = Course.objects.get(slug=slug)
+		# except Course.MultipleObjectsReturned:
+		# 	qs = Course.objects.filter(slug=slug)
+		# 	if qs.exists():
+		# 		obj = qs.first()
+		# except:
+		# 	raise Http404
+		# return obj
 
 	def get_context_data(self, *args, **kwargs):
 		context = super().get_context_data(*args, **kwargs)
