@@ -4,11 +4,13 @@ from django.db.models.signals import pre_save, post_save
 from django.utils.text import slugify
 from django.core.urlresolvers import reverse
 
+from .utils import create_slug
+
 # Create your models here.
 class Course(models.Model):
 	user 			= models.ForeignKey(settings.AUTH_USER_MODEL)
 	title 		    = models.CharField(max_length=120)
-	slug 			= models.SlugField(blank=True)
+	slug 			= models.SlugField(blank=True) # unique=True
 	description 	= models.TextField()
 	price 			= models.DecimalField(decimal_places=2, max_digits=100)
 	updated 		= models.DateTimeField(auto_now=True)
@@ -23,6 +25,6 @@ class Course(models.Model):
 
 def pre_save_video_receiver(sender, instance, *args, **kwargs):
 	if not instance.slug:
-		instance.slug = slugify(instance.title)
+		instance.slug = create_slug(instance)
 
 pre_save.connect(pre_save_video_receiver, sender=Course)

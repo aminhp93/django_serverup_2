@@ -32,7 +32,7 @@ class CourseDetailView(StaffMemberRequiredMixin, DetailView):
 
 	def get_object(self):
 		slug = self.kwargs.get("slug")
-				
+
 		obj = Course.objects.filter(slug=slug)
 		if obj.exists():
 			return obj.first()
@@ -77,6 +77,22 @@ class CourseUpdateView(UpdateView):
 		obj.save()
 		return super().form_valid(form)
 
+	def get_object(self):
+		slug = self.kwargs.get("slug")
+				
+		obj = Course.objects.filter(slug=slug)
+		if obj.exists():
+			return obj.first()
+		raise Http404
+
 class CourseDeleteView(DeleteView):
 	queryset = Course.objects.all()
 	success_url = "/courses/"
+
+	def get_object(self):
+		slug = self.kwargs.get("slug")
+				
+		obj = Course.objects.filter(slug=slug)
+		if obj.exists():
+			return obj.first()
+		raise Http404
