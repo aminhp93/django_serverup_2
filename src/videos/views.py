@@ -22,24 +22,25 @@ class VideoDetailView(DetailView):
 
 	def get_object(self):
 		abc = self.kwargs.get("slug")
-		print(abc)
 		return get_object_or_404(Video, slug=abc)
 
 	def get_context_data(self, *args, **kwargs):
 		context = super().get_context_data(*args, **kwargs)
-		print(context)
 		return context
 
 class VideoListView(ListView):
-	queryset = Video.objects.all()
 
-	# def get_queryset(self):
-		# return Video.objects.filter(title__icontains="em")#.filter(user=self.request.user)
+	def get_queryset(self):
+		request = self.request
+		qs = Video.objects.all()
+		query = request.GET.get('q')
+		if query:
+			qs = qs.filter(title__icontains=query)
+		return qs#filter(title__icontains="em")#.filter(user=self.request.user)
 
 	def get_context_data(self, *args, **kwargs):
 		context = super().get_context_data(*args, **kwargs)
 		context["random_number"] = random.randint(0,10)
-		print(context)
 		return context
 
 class VideoUpdateView(UpdateView):
