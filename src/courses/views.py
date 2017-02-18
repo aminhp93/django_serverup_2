@@ -11,7 +11,7 @@ from django.views.generic import (
 	)
 
 from .forms import CourseForm
-from .models import Course
+from .models import Course, Lecture
 from videos.mixins import MemberRequiredMixin, StaffMemberRequiredMixin
 
 # Create your views here.
@@ -26,6 +26,13 @@ class CourseCreateView(LoginRequiredMixin, CreateView):
 		obj.user = self.request.user
 		obj.save()
 		return super().form_valid(form)
+
+class LectureDetailView(MemberRequiredMixin, DetailView):
+	def get_object(self):
+		course_slug = self.kwargs.get("cslug")
+		lecture_slug = self.kwargs.get("lslug")
+		obj = get_object_or_404(Lecture, course__slug=course_slug, slug=lecture_slug)
+		return obj
 
 class CourseDetailView(StaffMemberRequiredMixin, DetailView):
 	queryset = Course.objects.all()
@@ -71,6 +78,7 @@ class CourseUpdateView(UpdateView):
 	form_class = CourseForm
 
 	def form_valid(self, form):
+		print("saf")
 		obj = form.save(commit=False)
 		if not self.request.user.is_staff:
 			obj.user = self.request.user
@@ -78,6 +86,7 @@ class CourseUpdateView(UpdateView):
 		return super().form_valid(form)
 
 	def get_object(self):
+		print("88")
 		slug = self.kwargs.get("slug")
 				
 		obj = Course.objects.filter(slug=slug)

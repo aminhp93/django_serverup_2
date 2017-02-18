@@ -1,12 +1,16 @@
-{% extends 'base.html' %}
-{% block title %}Video Detail | {{ block.super }}{% endblock %}
-{% block content %}
+{% extends 'base.html' %} {% block title %}Video Detail | {{ block.super }}{% endblock %} {% block content %}
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
-	{{ object.title }}
-	{{ object.embed_code|safe }}
-	{{ object.updated }}
-	{{ object.id }}
-	</div>
+        {{ object.title }} {{ object.embed_code|safe }} {{ object.updated }} {{ object.id }}
+        <ul>
+            {% for item in object.lecture_set.all %}
+            <li>
+                <a href="{{ item.get_absolute_url }}">{{ item.title }} | {{ item.lecture_set.count }} videos</a>
+            </li>
+            {% empty %}
+            <li>No item found</li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 {% endblock %}

@@ -40,7 +40,7 @@ class Lecture(models.Model):
 		unique_together = (('slug', 'course'))
 
 	def get_absolute_url(self):
-		return reverse("courses:detail", kwargs={"slug": self.course.slug})
+		return reverse("courses:lecture-detail", kwargs={"cslug": self.course.slug, "lslug":self.slug})
 
 def pre_save_video_receiver(sender, instance, *args, **kwargs):
 	if not instance.slug:

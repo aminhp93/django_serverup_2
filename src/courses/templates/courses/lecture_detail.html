@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Video Detail | {{ block.super }}{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+	{{ object.title }}
+	{{ object.video.embed_code|safe }}
+	{{ object.updated }}
+	{{ object.id }}
+	</div>
+	
+</div>
+{% endblock %}
