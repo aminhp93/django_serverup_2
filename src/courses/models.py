@@ -23,7 +23,7 @@ class Course(models.Model):
 
 	def get_absolute_url(self):
 		return reverse("courses:detail", kwargs={"slug": self.slug})
-
+# limit_choices_to={"lecture__isnull": True}
 class Lecture(models.Model):
 	course 			= models.ForeignKey(Course, on_delete=models.SET_NULL, null=True)
 	video 			= models.ForeignKey(Video, on_delete=models.SET_NULL, null=True) 
