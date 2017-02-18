@@ -11,7 +11,10 @@
 </head>
 
 <body>
-    {% block content %} {% endblock %} {% include 'defaults/scripts.html' %}
+    <div class="container-fluid">
+    	{% block content %} {% endblock %}
+    </div>
+    {% include 'defaults/scripts.html' %}
 </body>
 
 </html>

@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}Video Form | {{ block.super }}{% endblock %}
 {% block content %}
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
 	<form action="" method="POST">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<input type="submit" value="Save" class="btn btn-default">
 	</form>
+	</div>
+</div>
 {% endblock %}
