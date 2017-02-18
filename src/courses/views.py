@@ -9,9 +9,9 @@ from django.views.generic import (
 		DeleteView,
 	)
 
+from .froms import CourseForm
 from .models import Course
 from .mixins import MemberRequiredMixin, StaffMemberRequiredMixin
-# from .forms import VideoForm
 
 # Create your views here.
 
@@ -19,6 +19,13 @@ class CourseCreateView(LoginRequiredMixin, CreateView):
 	model = Course 
 	form_class = CourseForm
 	# success_url = "/"
+
+	def form_valid(self, form):
+		print("24", form)
+		obj = form.save(commit=False)
+		obj.user = self.request.user
+		obj.save()
+		return super().form_valid(form)
 
 class CourseDetailView(StaffMemberRequiredMixin, DetailView):
 	queryset = Course.objects.all()
@@ -48,6 +55,15 @@ class CourseListView(ListView):
 
 class CourseUpdateView(UpdateView):
 	queryset = Course.objects.all()
+	form_class = CourseForm
+
+	def form_valid(self, form):
+		obj = form.save(commit=False)
+		if not self.request.user.is_staff:
+			obj.user = self.request.user
+		obj.save()
+		return super().form_valid(form)
 
 class CourseDeleteView(DeleteView):
 	queryset = Course.objects.all()
+	success_url = "/courses/"
