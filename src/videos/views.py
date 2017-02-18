@@ -15,7 +15,8 @@ from .forms import VideoForm
 class VideoCreateView(CreateView):
 	model = Video 
 	form_class = VideoForm
-	
+	# success_url = "/"
+
 class VideoDetailView(DetailView):
 	queryset = Video.objects.all()
 
