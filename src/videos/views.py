@@ -1,5 +1,5 @@
 import random
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import (
 		CreateView,
 		DetailView,
@@ -17,13 +17,21 @@ class VideoCreateView(CreateView):
 class VideoDetailView(DetailView):
 	queryset = Video.objects.all()
 
+	def get_object(self):
+		abc = self.kwargs.get("slug")
+		print(abc)
+		return get_object_or_404(Video, slug=abc)
+
 	def get_context_data(self, *args, **kwargs):
 		context = super().get_context_data(*args, **kwargs)
 		print(context)
 		return context
 
 class VideoListView(ListView):
-	queryset = Video.objects.filter(title__icontains="em")
+	queryset = Video.objects.all()
+
+	# def get_queryset(self):
+		# return Video.objects.filter(title__icontains="em")#.filter(user=self.request.user)
 
 	def get_context_data(self, *args, **kwargs):
 		context = super().get_context_data(*args, **kwargs)
