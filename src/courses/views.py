@@ -1,5 +1,6 @@
 import random
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Prefetch
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import (
@@ -11,7 +12,8 @@ from django.views.generic import (
 	)
 
 from .forms import CourseForm
-from .models import Course, Lecture
+from .models import Course, Lecture, MyCourse
+
 from videos.mixins import MemberRequiredMixin, StaffMemberRequiredMixin
 
 # Create your views here.
@@ -64,14 +66,23 @@ class CourseListView(ListView):
 		request = self.request
 		qs = Course.objects.all()
 		query = request.GET.get('q')
+		user = self.request.user
 		if query:
 			qs = qs.filter(title__icontains=query)
+		if user.is_authenticated():
+			qs = qs.prefetch_related(
+					Prefetch("owned",
+						queryset=MyCourse.objects.filter(user=user),
+						to_attr="is_owner",
+					)
+				)
+			print(qs)
 		return qs#filter(title__icontains="em")#.filter(user=self.request.user)
 
-	def get_context_data(self, *args, **kwargs):
-		context = super().get_context_data(*args, **kwargs)
-		context["random_number"] = random.randint(0,10)
-		return context
+	# def get_context_data(self, *args, **kwargs):
+	# 	context = super().get_context_data(*args, **kwargs)
+	# 	context["random_number"] = random.randint(0,10)
+	# 	return context
 
 class CourseUpdateView(UpdateView):
 	queryset = Course.objects.all()
