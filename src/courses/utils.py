@@ -10,10 +10,11 @@ def unique_string_generator(size=5, chars=string.ascii_lowercase + string.digits
 
 def create_slug(instance, new_slug=None):
 	if not new_slug:
-		slug=slugify(instance.title)
+		slug = slugify(instance.title)
 	else:
 		slug = new_slug
 	Klass = instance.__class__
+	print(Klass)
 	qs = Klass.objects.filter(slug=slug).order_by("-id")
 	if qs.exists():
 		# return slug + "-1"

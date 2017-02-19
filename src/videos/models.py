@@ -3,7 +3,7 @@ from django.db.models.signals import pre_save, post_save
 from django.utils.text import slugify
 from django.core.urlresolvers import reverse
 
-from courses.utils import create_slug
+# from courses.utils import create_slug
 
 # Create your models here.
 class Video(models.Model):
@@ -23,7 +23,7 @@ class Video(models.Model):
 
 def pre_save_video_receiver(sender, instance, *args, **kwargs):
 	if not instance.slug:
-		instance.slug = create_slug(instance.title)
+		instance.slug = slugify(instance.title)
 
 pre_save.connect(pre_save_video_receiver, sender=Video)
 

@@ -8,7 +8,8 @@ class VideoAdmin(admin.ModelAdmin):
 	list_display = ['title', 'updated', 'timestamp']
 	readonly_fields = ['updated', 'timestamp', 'short_title']
 	search_fields = ['title', 'embed_code']
-	
+	prepopulated_fields = {"slug": ("title",)}
+
 	class Meta:
 		model = Video
 
