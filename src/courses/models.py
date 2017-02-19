@@ -1,4 +1,3 @@
-from django.contrib.humanize.templatetags.humanize import intcomma
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save, post_save
@@ -11,6 +10,25 @@ from .fields import PositionField
 from .utils import create_slug, make_display_price
 
 # Create your models here.
+
+class MyCourse(models.Model):
+	user 			= models.OneToOneField(settings.AUTH_USER_MODEL)
+	courses			= models.ManyToManyField('Course', blank=True)
+	updated 		= models.DateTimeField(auto_now=True)
+	timestamp 		= models.DateTimeField(auto_now_add=True) 	
+
+	def __str__(self):
+		return str(self.courses.all().count())
+
+	class Meta:
+		verbose_name = "My courses"
+		verbose_name_plural = "My courses"
+
+def post_save_user_create(sender, instance, created, *args, **kwargs):
+	if created:
+		MyCourse.objects.get_or_create(user=instance)
+
+post_save.connect(post_save_user_create, sender=settings.AUTH_USER_MODEL)
 
 POS_CHOICES = (
 		('main', 'Main'),
