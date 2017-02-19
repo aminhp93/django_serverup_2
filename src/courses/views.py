@@ -42,7 +42,7 @@ class CourseDetailView(StaffMemberRequiredMixin, DetailView):
 	def get_object(self):
 		slug = self.kwargs.get("slug")
 
-		obj = Course.objects.filter(slug=slug)
+		obj = Course.objects.filter(slug=slug).owned(self.request.user)
 		if obj.exists():
 			return obj.first()
 		raise Http404
@@ -70,19 +70,14 @@ class CourseListView(ListView):
 		if query:
 			qs = qs.filter(title__icontains=query)
 		if user.is_authenticated():
-			qs = qs.prefetch_related(
-					Prefetch("owned",
-						queryset=MyCourse.objects.filter(user=user),
-						to_attr="is_owner",
-					)
-				)
-			print(qs)
+			# qs = qs.prefetch_related(
+			# 		Prefetch("owned",
+			# 			queryset=MyCourse.objects.filter(user=user),
+			# 			to_attr="is_owner",
+			# 		)
+			# 	)
+			qs = qs.owned(user)
 		return qs#filter(title__icontains="em")#.filter(user=self.request.user)
-
-	# def get_context_data(self, *args, **kwargs):
-	# 	context = super().get_context_data(*args, **kwargs)
-	# 	context["random_number"] = random.randint(0,10)
-	# 	return context
 
 class CourseUpdateView(UpdateView):
 	queryset = Course.objects.all()
