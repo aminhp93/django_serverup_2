@@ -1,3 +1,4 @@
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save, post_save
@@ -7,7 +8,7 @@ from django.core.urlresolvers import reverse
 from videos.models import Video
 from .fields import PositionField
 
-# from .utils import create_slug
+from .utils import create_slug, make_display_price
 
 # Create your models here.
 
@@ -32,6 +33,9 @@ class Course(models.Model):
 
 	def get_absolute_url(self):
 		return reverse("courses:detail", kwargs={"slug": self.slug})
+
+	def display_price(self):
+		return make_display_price(self.price)
 
 # limit_choices_to={"lecture__isnull": True}
 class Lecture(models.Model):

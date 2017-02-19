@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
         {% if request.GET.q %} You serach for {{ request.GET.q }} {% endif %} {% for item in object_list %}
-        <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
+        <li><a href="{{ item.get_absolute_url }}">{{ item.title }} | {{ item.lecture_set.count }} lectures | {{ item.price }}</a></li>
         {% empty %}
         <li>No item found</li>
         {% endfor %}

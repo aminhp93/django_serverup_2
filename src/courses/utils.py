@@ -1,6 +1,7 @@
 import string
 import random
 
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django.utils.text import slugify
 
 
@@ -22,3 +23,7 @@ def create_slug(instance, new_slug=None):
 		newly_created_slug = slug + "-{id}".format(id=string_unique)
 		return create_slug(instance,new_slug=newly_created_slug)
 	return slug
+
+def make_display_price(price):
+	dollars = round(price, 2)
+	return "${}{}".format(intcomma(int(dollars)), ("%0.2f" % dollars)[-3:])
