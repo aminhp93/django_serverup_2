@@ -7,11 +7,11 @@ class LectureAdminForm(forms.ModelForm):
 	class Meta:
 		model = Lecture
 		fields = [
+			'order',
 			'title',
+			'slug',
 			'description',
 			'video',
-			'slug',
-			'order',
 		]
 
 	def __init__(self, *args, **kwargs):
