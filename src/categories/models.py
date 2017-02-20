@@ -21,7 +21,7 @@ class Category(models.Model):
 	title 		    = models.CharField(max_length=120)
 	slug 			= models.SlugField(blank=True) # unique=True
 	description 	= models.TextField()
-	order 			= PositionField(collection="category", blank=True)
+	order 			= PositionField(blank=True)
 	active 			= models.BooleanField(default=True)
 	updated 		= models.DateTimeField(auto_now=True)
 	timestamp 		= models.DateTimeField(auto_now_add=True) 

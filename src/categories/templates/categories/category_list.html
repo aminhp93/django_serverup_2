@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h1>Categories</h1>
+    </div>
+    <div class="col-sm-3">
+        <div class="list-group">
+            {% for item in object_list %}
+            <a href="{{ item.get_absolute_url }}" class="list-group-item">{{ item.title }}</a>
+            {% if forloop.counter|divisibleby:3 %}
+				</div></div><div class="col-sm-3"><div class="list-group">
+            {% endif %}
+            <!-- {% cycle '' '</div></div><div class="col-sm-3"><div class="list-group">' %} -->
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
