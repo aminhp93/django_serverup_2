@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.db.models import Count
 
+from videos.models import Video
 from courses.utils import create_slug
 from courses.fields import PositionField
 # Create your models here.
@@ -23,6 +24,7 @@ class CategoryManager(models.Manager):
 
 class Category(models.Model):
 	title 		    = models.CharField(max_length=120)
+	video 			= models.ForeignKey(Video, null=True, blank=True)
 	slug 			= models.SlugField(blank=True) # unique=True
 	description 	= models.TextField()
 	order 			= PositionField(blank=True)
