@@ -6,8 +6,9 @@ from django.utils.text import slugify
 from django.core.urlresolvers import reverse
 
 from videos.models import Video
-from .fields import PositionField
+from categories.models import Category
 
+from .fields import PositionField
 from .utils import create_slug, make_display_price
 
 # Create your models here.
@@ -60,7 +61,8 @@ class Course(models.Model):
 	user 			= models.ForeignKey(settings.AUTH_USER_MODEL)
 	title 		    = models.CharField(max_length=120)
 	slug 			= models.SlugField(blank=True) # unique=True
-	category 		= models.CharField(max_length=120, choices=POS_CHOICES, default="main")
+	# category 		= models.CharField(max_length=120, choices=POS_CHOICES, default="main")
+	category 		= models.ForeignKey(Category, related_name="primary_category", null=True, blank=True)
 	description 	= models.TextField()
 	order 			= PositionField()
 	price 			= models.DecimalField(decimal_places=2, max_digits=100)
