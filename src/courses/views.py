@@ -2,13 +2,14 @@ import random
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Prefetch
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import (
 		CreateView,
 		DetailView,
 		ListView,
 		UpdateView,
 		DeleteView,
+		RedirectView,
 	)
 
 from .forms import CourseForm
@@ -36,15 +37,30 @@ class LectureDetailView(MemberRequiredMixin, DetailView):
 		obj = get_object_or_404(Lecture, course__slug=course_slug, slug=lecture_slug)
 		return obj
 
-class CourseDetailView(StaffMemberRequiredMixin, DetailView):
+class CoursePurchaseView(LoginRequiredMixin, RedirectView):
+	permanent = False    
+
+	def get_redirect_url(self, slug=None):
+		qs = Course.objects.filter(slug=slug).owned(self.request.user)
+		if qs.exists():
+			user = self.request.user
+
+			if user.is_authenticated():
+				my_course = user.mycourse
+				# if transaction successful:
+				my_course.courses.add(qs.first())
+			return qs.first().get_absolute_url()
+		return "/courses/"
+
+class CourseDetailView(LoginRequiredMixin, DetailView):
 	queryset = Course.objects.all()
 
 	def get_object(self):
 		slug = self.kwargs.get("slug")
 
-		obj = Course.objects.filter(slug=slug).owned(self.request.user)
-		if obj.exists():
-			return obj.first()
+		qs = Course.objects.filter(slug=slug).owned(self.request.user)
+		if qs.exists():
+			return qs.first()
 		raise Http404
 		# try:
 		# 	obj = Course.objects.get(slug=slug)
@@ -84,7 +100,6 @@ class CourseUpdateView(UpdateView):
 	form_class = CourseForm
 
 	def form_valid(self, form):
-		print("saf")
 		obj = form.save(commit=False)
 		if not self.request.user.is_staff:
 			obj.user = self.request.user
@@ -92,7 +107,6 @@ class CourseUpdateView(UpdateView):
 		return super().form_valid(form)
 
 	def get_object(self):
-		print("88")
 		slug = self.kwargs.get("slug")
 				
 		obj = Course.objects.filter(slug=slug)

@@ -5,6 +5,10 @@
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
         {{ object.title }} {{ object.embed_code|safe }} <br>{{ object.updated }} <br>{{ object.id }} <br> {{ object.price|floatformat:2|intcomma }} <br> {{ object.display_price }}
+        <br>
+        {% if not object.is_onwer %}
+        <a href="{{ object.get_purchase_url }}">Purchase</a> {{ object.display_price }}
+        {% endif %}
         <ul>
             {% for item in object.lecture_set.all %}
             <li>
