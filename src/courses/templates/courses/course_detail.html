@@ -4,6 +4,9 @@
 {% block title %}Video Detail | {{ block.super }}{% endblock %} {% block content %}
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
+        {% if object.image %}
+        <img src="{{ object.image.url }}" alt="" class="img-responsive">
+        {% endif %}
         {{ object.title }} {{ object.embed_code|safe }} <br>{{ object.updated }} <br>{{ object.id }} <br> {{ object.price|floatformat:2|intcomma }} <br> {{ object.display_price }}
         <br>
         {% if not object.is_onwer %}

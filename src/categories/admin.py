@@ -11,7 +11,7 @@ class CategoryAdmin(admin.ModelAdmin):
 	search_fields = ['title']
 	form = CategoryAdminForm
 
-	class Meta:
-		model = Category
+	# class Meta:
+	# 	model = Category
 
 admin.site.register(Category, CategoryAdmin)
