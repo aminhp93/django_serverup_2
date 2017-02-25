@@ -13,7 +13,7 @@
                 <h3>Lecture</h3>
                 <div class="list-group">
                     {% for item in object.lecture_set.all %}
-                    <a class="list-group-item lead" {% if object.is_owner %} href="{{ item.get_absolute_url }}" {% endif %}>{{ item.title }}</a> {% empty %}
+                    <a class="list-group-item lead" {% if object.is_owner or item.free %} href="{{ item.get_absolute_url }}" {% endif %}>{{ item.title }}{% if item.free %} - <small>Free Preview</small>{% endif %}</a> {% empty %}
                     <div class="lead">Lecture coming soon</div>
                     {% endfor %}
                 </div>

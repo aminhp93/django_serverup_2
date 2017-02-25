@@ -11,6 +11,7 @@ class LectureAdminForm(forms.ModelForm):
 			'order',
 			'title',
 			'slug',
+			'free',
 			'description',
 			'video',
 		]

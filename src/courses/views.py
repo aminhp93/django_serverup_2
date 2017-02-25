@@ -39,14 +39,21 @@ class LectureDetailView(View):
 			raise Http404
 
 		course_ = qs.first()
-		if course_.is_owner:
-			lectures_qs = course_.lecture_set.filter(slug=lslug)
-			if lectures_qs.exists():
-				obj = lectures_qs.first()
+		
+		lectures_qs = course_.lecture_set.filter(slug=lslug)
+		if not lectures_qs:
+			raise Http404
+		
+		obj = lectures_qs.first()
 
 		context = {
 			"object": obj,
+			"course": course_,
 		}
+		
+		if not course_.is_owner and not obj.free:
+			return render(request, "courses/must_purchase.html", context)
+
 		return render(request, "courses/lecture_detail.html", context)
 
 	# def get_object(self):
