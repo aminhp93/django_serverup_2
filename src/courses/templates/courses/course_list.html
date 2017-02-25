@@ -1,18 +1,16 @@
 {% extends 'base.html' %}{% block title %}Courses | {{ block.super }}{% endblock %} {% block content %}
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
-        {% if request.GET.q %} You serach for {{ request.GET.q }} {% endif %} {% for item in object_list %}
-        <li><a href="{{ item.get_absolute_url }}">{{ item.title }} | {{ item.lecture_set.count }} lectures </a> 
-        
-        {% if item.is_owner %} 
-        	Owned 
-        {% else %} 
-        	{{ item.display_price }} 
-        {% endif %}
-        </li>
-        {% empty %}
-        <li>No item found</li>
-        {% endfor %}
+        {% if request.GET.q %} You serach for {{ request.GET.q }} {% endif %} 
+        <div class="row">
+        {% for item in object_list %}
+            <div class="col-sm-4">
+            {% include 'courses/snippets/course_thumbnail_display.html' with course=item %}    
+            </div>
+            {% empty %}
+            <li class="lead">No item found</li>
+        {% endfor %}    
+        </div>
     </div>
 </div>
 {% endblock %}
