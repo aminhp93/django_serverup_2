@@ -9,9 +9,10 @@ class CategoryAdmin(admin.ModelAdmin):
 	list_display = ['title', 'updated', 'timestamp']
 	readonly_fields = ['updated', 'timestamp']
 	search_fields = ['title']
+	ordering = ['title']
 	form = CategoryAdminForm
 
-	# class Meta:
-	# 	model = Category
+	class Meta:
+		model = Category
 
 admin.site.register(Category, CategoryAdmin)

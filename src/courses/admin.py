@@ -17,10 +17,11 @@ class CourseAdmin(admin.ModelAdmin):
 	list_display = ['title', 'updated', 'timestamp']
 	readonly_fields = ['updated', 'timestamp']
 	search_fields = ['title', 'description']
+	ordering = ['title']
+	prepopulated_fields = {"slug": ("title",)}
 
 	class Meta:
 		model = Course
-
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(MyCourse)

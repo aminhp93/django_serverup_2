@@ -23,7 +23,7 @@ class MyCourse(models.Model):
 		return str(self.courses.all().count())
 
 	class Meta:
-		verbose_name = "My courses"
+		verbose_name = "My course"
 		verbose_name_plural = "My courses"
 
 def post_save_user_create(sender, instance, created, *args, **kwargs):

@@ -40,6 +40,10 @@ class Category(models.Model):
 	def get_absolute_url(self):
 		return reverse("categories:detail", kwargs={"slug": self.slug})
 
+	class Meta:
+		verbose_name = 'Category'
+		verbose_name_plural = 'Categories'
+
 def pre_save_category_receiver(sender, instance, *args, **kwargs):
 	if not instance.slug:
 		instance.slug = create_slug(instance)

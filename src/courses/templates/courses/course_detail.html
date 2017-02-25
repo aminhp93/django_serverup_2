@@ -1,26 +1,24 @@
-{% extends 'base.html' %}
-{% load humanize %}
-
-{% block title %}Video Detail | {{ block.super }}{% endblock %} {% block content %}
+{% extends 'base.html' %} {% load humanize %} {% block title %}Course Detail | {{ block.super }}{% endblock %} {% block content %}
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
-        {% if object.image %}
-        <img src="{{ object.image.url }}" alt="" class="img-responsive">
+        <h1>{{ course.title }}</h1> {% if object.image %}
+        <img src="{{ object.image.url }}" alt="" class="img-responsive"> {% endif %}
+        <!-- {{ object.embed_code|safe }} <br>{{ object.updated }}  -->
+        <!-- {{ object.id }} {{ object.price|floatformat:2|intcomma }} -->
+        {% if not object.is_owner %}
+        <a href="{{ object.get_purchase_url }}" class="btn btn-success">{{ object.display_price }} - Purchase</a>
         {% endif %}
-        {{ object.title }} {{ object.embed_code|safe }} <br>{{ object.updated }} <br>{{ object.id }} <br> {{ object.price|floatformat:2|intcomma }} <br> {{ object.display_price }}
-        <br>
-        {% if not object.is_onwer %}
-        <a href="{{ object.get_purchase_url }}">Purchase</a> {{ object.display_price }}
-        {% endif %}
-        <ul>
-            {% for item in object.lecture_set.all %}
-            <li>
-                <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
-            </li>
-            {% empty %}
-            <li>No item found</li> 
-            {% endfor %}
-        </ul>
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Lecture</h3>
+                <div class="list-group">
+                    {% for item in object.lecture_set.all %}
+                    <a class="list-group-item lead" {% if object.is_owner %} href="{{ item.get_absolute_url }}" {% endif %}>{{ item.title }}</a> {% empty %}
+                    <div class="lead">Lecture coming soon</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

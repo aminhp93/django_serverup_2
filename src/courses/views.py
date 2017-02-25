@@ -46,7 +46,14 @@ class CoursePurchaseView(LoginRequiredMixin, RedirectView):
 			user = self.request.user
 
 			if user.is_authenticated():
-				my_course = user.mycourse
+
+				my_course, created = MyCourse.objects.get_or_create(user=user)
+				if created:
+					my_course.user = user
+					my_course.courses = qs
+					my_course.save()
+				else:
+					my_course = user.mycourse
 				# if transaction successful:
 				my_course.courses.add(qs.first())
 			return qs.first().get_absolute_url()
