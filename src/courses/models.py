@@ -41,10 +41,20 @@ class CourseQuerySet(models.query.QuerySet):
 	def active(self):
 		return self.filter(active=True)
 
+	def lectures(self):
+		return self.prefetch_related(
+				'lecture_set',
+			)
+
 	def owned(self, user):
+		if user.is_authenticated():
+			qs = MyCourse.objects.filter(user=user)
+		else:
+			qs = MyCourse.objects.none()
+
 		return self.prefetch_related(
 				Prefetch("owned",
-					queryset=MyCourse.objects.filter(user=user),
+					queryset=qs,
 					to_attr="is_owner",
 				)
 			)

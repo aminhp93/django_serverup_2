@@ -10,6 +10,7 @@ from django.views.generic import (
 		UpdateView,
 		DeleteView,
 		RedirectView,
+		View,
 	)
 
 from .forms import CourseForm
@@ -30,12 +31,29 @@ class CourseCreateView(LoginRequiredMixin, CreateView):
 		obj.save()
 		return super().form_valid(form)
 
-class LectureDetailView(MemberRequiredMixin, DetailView):
-	def get_object(self):
-		course_slug = self.kwargs.get("cslug")
-		lecture_slug = self.kwargs.get("lslug")
-		obj = get_object_or_404(Lecture, course__slug=course_slug, slug=lecture_slug)
-		return obj
+class LectureDetailView(View):
+	def get(self, request, cslug=None, lslug=None, *args, **kwargs):
+		obj = None
+		qs = Course.objects.filter(slug=cslug).lectures().owned(self.request.user)
+		if not qs.exists():
+			raise Http404
+
+		course_ = qs.first()
+		if course_.is_owner:
+			lectures_qs = course_.lecture_set.filter(slug=lslug)
+			if lectures_qs.exists():
+				obj = lectures_qs.first()
+
+		context = {
+			"object": obj,
+		}
+		return render(request, "courses/lecture_detail.html", context)
+
+	# def get_object(self):
+	# 	course_slug = self.kwargs.get("cslug")
+	# 	lecture_slug = self.kwargs.get("lslug")
+	# 	obj = get_object_or_404(Lecture, course__slug=course_slug, slug=lecture_slug)
+	# 	return obj
 
 class CoursePurchaseView(LoginRequiredMixin, RedirectView):
 	permanent = False    
