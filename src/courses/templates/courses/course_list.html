@@ -4,9 +4,14 @@
         {% if request.GET.q %} You serach for {{ request.GET.q }} {% endif %} 
         <div class="row">
         {% for item in object_list %}
-            <div class="col-sm-4">
+            <div class="col-md-6">
             {% include 'courses/snippets/course_thumbnail_display.html' with course=item %}    
             </div>
+
+            {% if forloop.counter|divisibleby:2 %}
+                </div><div class="row">
+            {% endif %}
+
             {% empty %}
             <li class="lead">No item found</li>
         {% endfor %}    
